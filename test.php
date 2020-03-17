@@ -1,22 +1,21 @@
 <?php
 require('connection.php');
 $errors = "";
-session_start();
+
 
 if (isset($_POST['task'])) {
     $task = $_POST['task'];
     $name = $_POST['name'];
     $email = $_POST['email'];
     $progress = '-';
-    $edit = '';
     if (isset($_GET['edit_task'])) {
         $id = $_GET['edit_task'];
-        $sql = mysqli_query($connection, "UPDATE tasks SET task='{$_POST['task']}' WHERE id=$id ");
+        $sql = mysqli_query($connection, "UPDATE tasks SET task=$_POST WHERE id=$id ");
     } else {
-        $sql = mysqli_query($connection, "INSERT INTO tasks (task, name, email, progress, edit) VALUES ('$task', '$name', '$email', '$progress', '$edit')");
+        $sql = mysqli_query($connection, "INSERT INTO tasks (task, name, email, progress) VALUES ('$task', '$name', '$email', '$progress')");
     }
 }
-
+session_start();
 if (isset($_POST['submit'])) {
     $id = $_GET['edit_task'];
     $sql = mysqli_query($connection, "UPDATE tasks SET task=$_POST WHERE id=$id ");
@@ -92,12 +91,11 @@ if (isset($_GET['sortby'])) {
 
     </header>
     <?php if (isset($_GET['edit_task'])) { ?>
-        <form method="POST" action="" class="add-task">
+        <form method="POST" action="index.php" class="add-task">
             <textarea name="task" cols="40" rows="3" class="task-input" placeholder="Input your task...">
                 <?php echo $tasks['task'];  ?>
             </textarea>
             <button type="submit" class="task-btn">Edit Task</button>
-            <a href="/index.php"><button type="submit" class="task-btn">Add Task</button></a>
         </form>
     <?php } else { ?>
         <form method="POST" action="index.php" class="add-task">
@@ -137,8 +135,6 @@ if (isset($_GET['sortby'])) {
                     <td>
                         <?php if (isset($_SESSION['username'])) { ?>
                             <?php echo $rows['task']; ?>
-                            <?php echo $rows['edit']; ?>
-                            <br />
                             <a href="index.php?edit_task=<?php echo $rows['id']; ?>">Edit Task</a>
                         <?php } else { ?>
                             <?php echo $rows['task']; ?>
@@ -165,14 +161,115 @@ if (isset($_GET['sortby'])) {
 
     <div class='pagination'>
         <?php
-        $page_url = (isset($_SERVER["QUERY_STRING"]) ? '&' : '?');
         for ($i = 1; $i <= $str_pag; $i++) {
-            echo "<a class='page' href=$page_url.page=" . $i . ">" . $i . "</a>";
-            // echo 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+            echo "<a class='page' href=index.php?page=" . $i . ">" . $i . "</a>";
         }
         ?>
     </div>
 
+</body>
+
+</html>
+
+
+
+
+<!-- TEST APP -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <title>Todo List</title>
+</head>
+
+<body>
+    <?php
+    $link = mysqli_connect('localhost', 'root', '', 'todo'); // Соединяемся с базой
+
+    // Ругаемся, если соединение установить не удалось
+    if (!$link) {
+        echo 'Не могу соединиться с БД. Код ошибки: ' . mysqli_connect_errno() . ', ошибка: ' . mysqli_connect_error();
+        exit;
+    }
+
+    //Если переменная Name передана
+    if (isset($_POST["Name"])) {
+        //Если это запрос на обновление, то обновляем
+        if (isset($_GET['red_id'])) {
+            $sql = mysqli_query($link, "UPDATE `products` SET `Name` = '{$_POST['Name']}',`Price` = '{$_POST['Price']}' WHERE `ID`={$_GET['red_id']}");
+        } else {
+            //Иначе вставляем данные, подставляя их в запрос
+            $sql = mysqli_query($link, "INSERT INTO `products` (`Name`, `Price`) VALUES ('{$_POST['Name']}', '{$_POST['Price']}')");
+        }
+
+        //Если вставка прошла успешно
+        if ($sql) {
+            echo '<p>Успешно!</p>';
+        } else {
+            echo '<p>Произошла ошибка: ' . mysqli_error($link) . '</p>';
+        }
+    }
+
+    if (isset($_GET['del_id'])) { //проверяем, есть ли переменная
+        //удаляем строку из таблицы
+        $sql = mysqli_query($link, "DELETE FROM `products` WHERE `ID` = {$_GET['del_id']}");
+        if ($sql) {
+            echo "<p>Товар удален.</p>";
+        } else {
+            echo '<p>Произошла ошибка: ' . mysqli_error($link) . '</p>';
+        }
+    }
+
+    //Если передана переменная red_id, то надо обновлять данные. Для начала достанем их из БД
+    if (isset($_GET['red_id'])) {
+        $sql = mysqli_query($link, "SELECT `Name`, `Price` FROM `products` WHERE `ID`={$_GET['red_id']}");
+        $product = mysqli_fetch_array($sql);
+    }
+    ?>
+    <form action="" method="post">
+        <table>
+            <tr>
+                <td>Наименование:</td>
+                <td><input type="text" name="Name" value="<?= isset($_GET['red_id']) ? $product['Name'] : ''; ?>"></td>
+            </tr>
+            <tr>
+                <td>Цена:</td>
+                <td><input type="text" name="Price" size="3" value="<?= isset($_GET['red_id']) ? $product['Price'] : ''; ?>"> руб.</td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="OK"></td>
+            </tr>
+        </table>
+    </form>
+    <table border='1'>
+        <tr>
+            <td>Идентификатор</td>
+            <td>Наименование</td>
+            <td>Цена</td>
+            <td>Удаление</td>
+            <td>Редактирование</td>
+        </tr>
+        <?php
+        $sql = mysqli_query($link, 'SELECT `ID`, `Name`, `Price` FROM `products`');
+        while ($result = mysqli_fetch_array($sql)) {
+            echo '<tr>' .
+                "<td>{$result['ID']}</td>" .
+                "<td>{$result['Name']}</td>" .
+                "<td>{$result['Price']} ₽</td>" .
+                "<td><a href='?del_id={$result['ID']}'>Удалить</a></td>" .
+                "<td><a href='?red_id={$result['ID']}'>Изменить</a></td>" .
+                '</tr>';
+        }
+        ?>
+    </table>
+    <p><a href="?add=new">Добавить новый товар</a></p>
 </body>
 
 </html>
