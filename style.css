@@ -186,3 +186,8 @@ h2 {
     border: none;
     padding: 5px 20px;
 }
+
+.come-back {
+    display: block;
+    text-align: center;
+}

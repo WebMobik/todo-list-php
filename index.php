@@ -53,22 +53,31 @@ $str_pag = ceil($total / $limit);
 
 $sql = mysqli_query($connection, "SELECT * FROM tasks LIMIT $number, $limit");
 
+$count = 0;
+
 if (isset($_GET['sortby'])) {
 
     $sortby = $_GET['sortby'];
 
     // DESC ASC
-
+    $asc = 'ASC';
+    $desc = 'DESC';
     if ($sortby == 'id') {
+        $sort = http_build_query($_GET);
         $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY id LIMIT $number, $limit");
     } elseif ($sortby == 'name') {
-        $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY name LIMIT $number, $limit");
+        $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY name $asc LIMIT $number, $limit");
     } elseif ($sortby == 'email') {
         $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY email LIMIT $number, $limit");
     } elseif ($sortby == 'task') {
         $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY task LIMIT $number, $limit");
+    } elseif ($sortby == 'perfomence') {
+        $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY progress LIMIT $number, $limit");
     }
 }
+
+$query = http_build_query($_GET);
+$query = preg_replace('/&page=\d*/i', '', $query);
 
 ?>
 
@@ -96,8 +105,9 @@ if (isset($_GET['sortby'])) {
             <textarea name="task" cols="40" rows="3" class="task-input" placeholder="Input your task...">
                 <?php echo $tasks['task'];  ?>
             </textarea>
+            <a class="come-back" href="/index.php">Come Back</a>
             <button type="submit" class="task-btn">Edit Task</button>
-            <a href="/index.php"><button type="submit" class="task-btn">Add Task</button></a>
+
         </form>
     <?php } else { ?>
         <form method="POST" action="index.php" class="add-task">
@@ -109,10 +119,16 @@ if (isset($_GET['sortby'])) {
     <?php } ?>
     <div class="sort-by">
         <span>Sort By:</span>
-        <a href="index.php?sortby=id">Id</a></<a>
+        <a href=index.php?sortby=id<?php echo $asc ?>>Id</a>
         <a href="index.php?sortby=name">Name</a></option>
         <a href="index.php?sortby=email">Email</a></option>
         <a href="index.php?sortby=task">Tasks</a></option>
+        <a href="index.php?sortby=perfomence">Perfomence</a></option>
+        <select name="sort_value" id="sortValue">
+            <option value="asc" selected>По убыванию</option>
+            <option value="desc">По возрастанию</option>
+            <select />
+            <?php echo $sort; ?>
     </div>
 
     <table>
@@ -131,7 +147,7 @@ if (isset($_GET['sortby'])) {
             <?php $i = 1;
             while ($rows = mysqli_fetch_array($sql)) { ?>
                 <tr>
-                    <td class="center"><?php echo $i; ?></td>
+                    <td class="center"><?php echo $rows['id']; ?></td>
                     <td class="center"><?php echo $rows['email'] ?></td>
                     <td class="center"><?php echo $rows['name'] ?></td>
                     <td>
@@ -165,12 +181,9 @@ if (isset($_GET['sortby'])) {
 
     <div class='pagination'>
         <?php
-        $page_url = (isset($_SERVER["QUERY_STRING"]) ? '&' : '?');
-        for ($i = 1; $i <= $str_pag; $i++) {
-            echo "<a class='page' href=$page_url.page=" . $i . ">" . $i . "</a>";
-            // echo 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-        }
-        ?>
+        for ($i = 1; $i <= $str_pag; $i++) { ?>
+            <a class="page" href=?<?php echo $query ?>&page=<?php echo $i . "" ?>><?php echo $i; ?></a>
+        <?php } ?>
     </div>
 
 </body>
