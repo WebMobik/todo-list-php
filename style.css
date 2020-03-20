@@ -1,160 +1,151 @@
 html,
 body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
 }
 
 header {
-    padding: 17px 0px;
-    background: rgb(230, 230, 230);
+  padding: 17px 0px;
+}
+
+h4 {
+  display: inline-block;
 }
 
 ul {
-    margin: 0;
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
 }
 
-ul li {
-    margin: 0 35px;
+header ul li {
+  margin: 0 35px;
 }
 
 a {
-    text-decoration: none;
-    color: rgb(121, 121, 121);
+  text-decoration: none;
+}
+
+a:hover {
+  transition: 0.3s;
+  text-decoration: none;
 }
 
 ul li a {
-    font-size: 20px;
+  font-size: 20px;
+}
+
+form {
+  text-align: center;
 }
 
 .sort-by a {
-    margin: 0 10px;
-    padding: 3px 7px;
-    border-radius: 3px;
-    color: #fff;
-    background-color: silver;
+  margin: 0 10px;
+}
+
+.page-link {
+  border-radius: 3px;
+  margin: 0 5px;
 }
 
 .task-email,
-.task-input,
 .task-name,
 .task-btn {
-    display: block;
-    margin: 10px auto;
-    font-size: 15px;
+  display: block;
+  margin: 10px auto;
+  font-size: 15px;
 }
 
 .task-email,
-.task-input,
 .task-name {
-    border: 1px solid silver;
-    padding: 5px 10px;
-    border-radius: 3px;
+  border: 1px solid silver;
+  padding: 5px 10px;
+  border-radius: 3px;
 }
 
-.task-input,
 .task-btn {
-    resize: none;
-    margin: 0 10px;
-}
-
-.sort-by {
-    margin: 0 auto;
-    width: 70%;
+  resize: none;
+  margin: 0 10px;
 }
 
 .add-task {
-    margin: 40px 0px;
+  margin: 40px 0px;
 }
 
-table {
-    width: 90%;
-    margin: 30px auto;
-    border-collapse: collapse;
+.table {
+  width: 90%;
+  margin: 30px auto;
 }
 
-tbody {
-    height: 300px;
+thead th {
+  font-size: 19px;
+  text-align: center;
 }
 
-tr {
-    border-bottom: 1px solid #cdcdcd;
-}
-
-th {
-    font-size: 19px;
-    padding: 10px 0px;
-}
-
-th,
-td {
-    border: none;
-    height: 30px;
-    padding: 0px 25px;
-}
-
-tr:hover {
-    background: #E9E9E9;
+.form-control {
+  width: auto;
+  margin: 15px auto;
+  resize: none;
 }
 
 .task {
-    text-align: left;
+  text-align: left;
 }
 
 .center {
-    text-align: center;
-    margin: 0 30px;
+  text-align: center;
+  margin: 0 30px;
 }
 
 .access a {
-    color: white;
-    background: #2cb655;
-    padding: 1px 6px;
-    border-radius: 3px;
-    text-decoration: none;
+  color: white;
+  background: #2cb655;
+  padding: 1px 6px;
+  border-radius: 3px;
+  text-decoration: none;
 }
 
 .perf a {
-    color: white;
-    background: #d8c731;
-    padding: 1px 6px;
-    border-radius: 3px;
-    text-decoration: none;
+  color: white;
+  background: #d8c731;
+  padding: 1px 6px;
+  border-radius: 3px;
+  text-decoration: none;
 }
 
 .delete a {
-    color: white;
-    background: #a52a2a;
-    padding: 1px 6px;
-    border-radius: 3px;
-    text-decoration: none;
+  color: white;
+  background: #a52a2a;
+  padding: 1px 6px;
+  border-radius: 3px;
+  text-decoration: none;
 }
 
 .pagination {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .pagination .page {
-    background-color: silver;
-    color: rgb(236, 236, 236);
-    padding: 3px 6px;
-    margin: 0 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    text-decoration: none;
+  background-color: silver;
+  color: rgb(236, 236, 236);
+  padding: 3px 6px;
+  margin: 0 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 h2 {
-    text-align: center;
+  text-align: center;
 }
 
 .sign-in {
-    text-align: center;
+  margin: 30px 0px;
+  text-align: center;
 }
 
 .login-name,
@@ -164,9 +155,9 @@ h2 {
 .task-input,
 .task-name,
 .task-btn {
-    display: block;
-    margin: 10px auto;
-    font-size: 15px;
+  display: block;
+  margin: 10px auto;
+  font-size: 15px;
 }
 
 .login-name,
@@ -174,20 +165,26 @@ h2 {
 .task-email,
 .task-input,
 .task-name {
-    border: 1px solid silver;
-    padding: 5px 10px;
-    border-radius: 3px;
+  border: 1px solid silver;
+  padding: 5px 10px;
+  border-radius: 3px;
 }
 
 .sign-in-btn,
 .task-btn {
-    cursor: pointer;
-    border-radius: 3px;
-    border: none;
-    padding: 5px 20px;
+  cursor: pointer;
+  border-radius: 3px;
+  border: none;
+  padding: 5px 20px;
 }
 
 .come-back {
-    display: block;
-    text-align: center;
+  margin-right: 20px;
+}
+
+footer {
+  height: 50px;
+  margin-top: 30px;
+  color: #fff;
+  padding: 10px 0px;
 }

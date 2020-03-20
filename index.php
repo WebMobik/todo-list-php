@@ -87,12 +87,13 @@ $query = preg_replace('/&page=\d*/i', '', $query);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css" />
     <link rel="stylesheet" href="style.css">
     <title>Todo List</title>
 </head>
 
 <body>
-    <header>
+    <header class="bg-primary">
         <ul>
             <li class="logo"><a href="/index.php">List App</a></li>
             <?php if (isset($_SESSION['username'])) { ?><li class="login"><a href="/logout.php"><?php echo "Sign Out" ?></a></li><?php } else { ?>
@@ -100,92 +101,99 @@ $query = preg_replace('/&page=\d*/i', '', $query);
         </ul>
 
     </header>
-    <?php if (isset($_GET['edit_task'])) { ?>
-        <form method="POST" action="" class="add-task">
-            <textarea name="task" cols="40" rows="3" class="task-input" placeholder="Input your task...">
-                <?php echo $tasks['task'];  ?>
-            </textarea>
-            <a class="come-back" href="/index.php">Come Back</a>
-            <button type="submit" class="task-btn">Edit Task</button>
-
-        </form>
-    <?php } else { ?>
-        <form method="POST" action="index.php" class="add-task">
-            <input type="email" name="email" class="task-email" placeholder="Email" required />
-            <input type="text" name="name" class="task-name" placeholder="Login" required />
-            <textarea name="task" cols="40" rows="3" class="task-input" placeholder="Input your task..." required></textarea>
-            <button type="submit" class="task-btn">Add Task</button>
-        </form>
-    <?php } ?>
-    <div class="sort-by">
-        <span>Sort By:</span>
-        <a href=index.php?sortby=id<?php echo $asc ?>>Id</a>
-        <a href="index.php?sortby=name">Name</a></option>
-        <a href="index.php?sortby=email">Email</a></option>
-        <a href="index.php?sortby=task">Tasks</a></option>
-        <a href="index.php?sortby=perfomence">Perfomence</a></option>
-        <select name="sort_value" id="sortValue">
-            <option value="asc" selected>По убыванию</option>
-            <option value="desc">По возрастанию</option>
-            <select />
-            <?php echo $sort; ?>
-    </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>N</th>
-                <th>Email</th>
-                <th>Name</th>
-                <th>Task</th>
-                <th>Perfomence</th>
-                <?php if (isset($_SESSION['username'])) { ?><th>Action</th><?php } ?>
-            </tr>
-        </thead>
-
-        <tbody>
-            <?php $i = 1;
-            while ($rows = mysqli_fetch_array($sql)) { ?>
-                <tr>
-                    <td class="center"><?php echo $rows['id']; ?></td>
-                    <td class="center"><?php echo $rows['email'] ?></td>
-                    <td class="center"><?php echo $rows['name'] ?></td>
-                    <td>
-                        <?php if (isset($_SESSION['username'])) { ?>
-                            <?php echo $rows['task']; ?>
-                            <?php echo $rows['edit']; ?>
-                            <br />
-                            <a href="index.php?edit_task=<?php echo $rows['id']; ?>">Edit Task</a>
-                        <?php } else { ?>
-                            <?php echo $rows['task']; ?>
-                        <?php } ?>
-                    </td>
-                    <?php if (isset($_SESSION['username'])) { ?>
-                        <td class="center access">
-                            <a href="index.php?access_task=<?php echo $rows['id']; ?>"><?php echo $rows['progress'] ?></a>
-                        </td>
-                        <td class="center delete">
-                            <a href="index.php?del_task=<?php echo $rows['id']; ?>">x</a>
-                        </td>
-                    <?php } else { ?>
-                        <td class="center access">
-                            <a href=""><?php echo $rows['progress'] ?></a>
-                        </td>
-                    <?php } ?>
-                </tr>
-            <?php $i++;
-            } ?>
-        </tbody>
-
-    </table>
-
-    <div class='pagination'>
-        <?php
-        for ($i = 1; $i <= $str_pag; $i++) { ?>
-            <a class="page" href=?<?php echo $query ?>&page=<?php echo $i . "" ?>><?php echo $i; ?></a>
+    <div class="container">
+        <?php if (isset($_GET['edit_task'])) { ?>
+            <form method="POST" action="" class="add-task">
+                <textarea class="form-control" name="task" cols="40" rows="3" placeholder="Edit your task...">
+                    <?php echo $tasks['task'];  ?>
+                </textarea>
+                <a class="come-back" href="/index.php">Come Back</a>
+                <button type="submit" class="btn btn-outline-success">Edit Task</button>
+            </form>
+        <?php } else { ?>
+            <form method="POST" action="index.php" class="add-task">
+                <input type="email" class="form-control" name="email" placeholder="Enter email" required>
+                <input type="text" class="form-control" name="name" placeholder="Enter name" required>
+                <textarea class="form-control" id="exampleTextarea" name="task" rows="3" cols="40" placeholder="Input your task..."></textarea>
+                <button type="submit" class="btn btn-outline-success">Add Task</button>
+            </form>
         <?php } ?>
+        <div class="sort-by">
+            <h4>Sort By:</h4>
+            <a href=index.php?sortby=id class="btn btn-secondary">Id</a>
+            <a href="index.php?sortby=name" class="btn btn-secondary">Name</a></option>
+            <a href="index.php?sortby=email" class="btn btn-secondary">Email</a></option>
+            <a href="index.php?sortby=task" class="btn btn-secondary">Tasks</a></option>
+            <a href="index.php?sortby=perfomence" class="btn btn-secondary">Perfomence</a></option>
+            <select name="sort_value" id="sortValue">
+                <option value="asc" selected>По убыванию</option>
+                <option value="desc">По возрастанию</option>
+                <select />
+        </div>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>N</th>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Task</th>
+                    <th>Perfomence</th>
+                    <?php if (isset($_SESSION['username'])) { ?><th>Action</th><?php } ?>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php $i = 1;
+                while ($rows = mysqli_fetch_array($sql)) { ?>
+                    <tr>
+                        <td class="center"><?php echo $rows['id']; ?></td>
+                        <td class="center"><?php echo $rows['email'] ?></td>
+                        <td class="center"><?php echo $rows['name'] ?></td>
+                        <td>
+                            <?php if (isset($_SESSION['username'])) { ?>
+                                <?php echo $rows['task']; ?>
+                                <?php echo $rows['edit']; ?>
+                                <br />
+                                <a href="index.php?edit_task=<?php echo $rows['id']; ?>" class="blockquote-footer">Edit Task</a>
+                            <?php } else { ?>
+                                <?php echo $rows['task']; ?>
+                            <?php } ?>
+                        </td>
+                        <?php if (isset($_SESSION['username'])) { ?>
+                            <td class="center access">
+                                <a href="index.php?access_task=<?php echo $rows['id']; ?>"><?php echo $rows['progress'] ?></a>
+                            </td>
+                            <td class="center delete">
+                                <a href="index.php?del_task=<?php echo $rows['id']; ?>">x</a>
+                            </td>
+                        <?php } else { ?>
+                            <td class="center access">
+                                <a href=""><?php echo $rows['progress'] ?></a>
+                            </td>
+                        <?php } ?>
+                    </tr>
+                <?php $i++;
+                } ?>
+            </tbody>
+
+        </table>
+
+        <ul class="pagination pagination-sm">
+            <?php
+            for ($i = 1; $i <= $str_pag; $i++) { ?>
+                <li><a class="page-link" href=?<?php echo $query ?>&page=<?php echo $i . "" ?>><?php echo $i; ?></a></li>
+            <?php } ?>
+        </ul>
     </div>
 
+    <footer class="bg-primary">
+        <div class="container">
+            <div class="made-in">
+                Made In <a href="https://github.com/WebMobik">WebMobik</a>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

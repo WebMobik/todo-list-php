@@ -26,13 +26,14 @@ if (isset($_POST['username']) and isset($_POST['password'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css" />
     <link rel="stylesheet" href="style.css">
     <title>Login In</title>
 </head>
 
 <body>
 
-    <header>
+    <header class="bg-primary">
         <ul>
             <li class="logo"><a href="/index.php">List App</a></li>
             <?php if (isset($_SESSION['username'])) { ?><li class="login"><a href="/logout.php"><?php echo "Sign Out" ?></a></li><?php } else { ?>
@@ -40,16 +41,14 @@ if (isset($_POST['username']) and isset($_POST['password'])) {
         </ul>
     </header>
 
-    <div>
-
+    <div class="sign-in">
+        <h2>Sign In</h2>
+        <form method="POST" action="login.php">
+            <input type="text" class="form-control" name="username" placeholder="Enter name" required>
+            <input type="password" class="form-control" name="password" placeholder="Password" required>
+            <button type="submit" class="btn btn-outline-success">Sign In</button>
+        </form>
     </div>
-
-    <h2>Authorization</h2>
-    <form method="POST" action="login.php" class="sign-in">
-        <input type="text" name="username" class="login-name" placeholder="login" required />
-        <input type="password" name="password" class="login-password" placeholder="password" required />
-        <button type="submit" class="sign-in-btn">Sign In</button>
-    </form>
 
 </body>
 
