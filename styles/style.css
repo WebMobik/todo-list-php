@@ -1,8 +1,9 @@
 html,
 body {
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
 }
 
@@ -12,6 +13,11 @@ header {
 
 h4 {
   display: inline-block;
+}
+
+h2 {
+  text-align: center;
+  margin-top: 40px;
 }
 
 ul {
@@ -42,6 +48,15 @@ form {
   text-align: center;
 }
 
+.sort {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.sort .btn {
+  margin-left: 10px;
+}
+
 .sort-by a {
   margin: 0 10px;
 }
@@ -59,20 +74,13 @@ form {
   font-size: 15px;
 }
 
-.task-email,
-.task-name {
-  border: 1px solid silver;
-  padding: 5px 10px;
-  border-radius: 3px;
-}
-
 .task-btn {
   resize: none;
   margin: 0 10px;
 }
 
 .add-task {
-  margin: 40px 0px;
+  margin-bottom: 40px;
 }
 
 .table {
@@ -89,6 +97,14 @@ thead th {
   width: auto;
   margin: 15px auto;
   resize: none;
+}
+
+.sort .form-control {
+  display: inline-block;
+}
+
+.text-info {
+  font-size: 12px;
 }
 
 .task {
@@ -108,14 +124,6 @@ thead th {
   text-decoration: none;
 }
 
-.perf a {
-  color: white;
-  background: #d8c731;
-  padding: 1px 6px;
-  border-radius: 3px;
-  text-decoration: none;
-}
-
 .delete a {
   color: white;
   background: #a52a2a;
@@ -127,20 +135,7 @@ thead th {
 .pagination {
   display: flex;
   justify-content: center;
-}
-
-.pagination .page {
-  background-color: silver;
-  color: rgb(236, 236, 236);
-  padding: 3px 6px;
-  margin: 0 10px;
-  border-radius: 3px;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-h2 {
-  text-align: center;
+  margin-bottom: 50px;
 }
 
 .sign-in {
@@ -148,43 +143,6 @@ h2 {
   text-align: center;
 }
 
-.login-name,
-.login-password,
-.sign-in-btn,
-.task-email,
-.task-input,
-.task-name,
-.task-btn {
-  display: block;
-  margin: 10px auto;
-  font-size: 15px;
-}
-
-.login-name,
-.login-password,
-.task-email,
-.task-input,
-.task-name {
-  border: 1px solid silver;
-  padding: 5px 10px;
-  border-radius: 3px;
-}
-
-.sign-in-btn,
-.task-btn {
-  cursor: pointer;
-  border-radius: 3px;
-  border: none;
-  padding: 5px 20px;
-}
-
 .come-back {
   margin-right: 20px;
-}
-
-footer {
-  height: 50px;
-  margin-top: 30px;
-  color: #fff;
-  padding: 10px 0px;
 }

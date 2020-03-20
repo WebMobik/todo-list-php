@@ -1,3 +1,2 @@
 <?php
-$connection = mysqli_connect('localhost', 'root', '', 'todo');
-$select_db = mysqli_select_db($connection, 'todo');
+$connection = mysqli_connect('localhost', 'id5575952_mobik', 'qazwsx', 'id5575952_todo');

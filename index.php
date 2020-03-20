@@ -11,7 +11,7 @@ if (isset($_POST['task'])) {
     $edit = '';
     if (isset($_GET['edit_task'])) {
         $id = $_GET['edit_task'];
-        $sql = mysqli_query($connection, "UPDATE tasks SET task='{$_POST['task']}' WHERE id=$id ");
+        $sql = mysqli_query($connection, "UPDATE tasks SET task='{$_POST['task']}', edit='Edited'  WHERE id=$id ");
     } else {
         $sql = mysqli_query($connection, "INSERT INTO tasks (task, name, email, progress, edit) VALUES ('$task', '$name', '$email', '$progress', '$edit')");
     }
@@ -53,26 +53,27 @@ $str_pag = ceil($total / $limit);
 
 $sql = mysqli_query($connection, "SELECT * FROM tasks LIMIT $number, $limit");
 
-$count = 0;
-
 if (isset($_GET['sortby'])) {
 
     $sortby = $_GET['sortby'];
+    $sortvalue = $_GET['sortvalue'];
 
-    // DESC ASC
-    $asc = 'ASC';
-    $desc = 'DESC';
+    $sort = 'DESC';
+
+    if ($sortvalue == 'asc') {
+        $sort = 'ASC';
+    }
+
     if ($sortby == 'id') {
-        $sort = http_build_query($_GET);
-        $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY id LIMIT $number, $limit");
+        $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY id $sort LIMIT $number, $limit");
     } elseif ($sortby == 'name') {
-        $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY name $asc LIMIT $number, $limit");
+        $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY name $sort LIMIT $number, $limit");
     } elseif ($sortby == 'email') {
-        $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY email LIMIT $number, $limit");
+        $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY email $sort LIMIT $number, $limit");
     } elseif ($sortby == 'task') {
-        $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY task LIMIT $number, $limit");
+        $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY task $sort LIMIT $number, $limit");
     } elseif ($sortby == 'perfomence') {
-        $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY progress LIMIT $number, $limit");
+        $sql = mysqli_query($connection, "SELECT * FROM tasks ORDER BY progress $sort LIMIT $number, $limit");
     }
 }
 
@@ -88,7 +89,7 @@ $query = preg_replace('/&page=\d*/i', '', $query);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./styles/style.css">
     <title>Todo List</title>
 </head>
 
@@ -102,6 +103,7 @@ $query = preg_replace('/&page=\d*/i', '', $query);
 
     </header>
     <div class="container">
+        <h2>Add your task</h2>
         <?php if (isset($_GET['edit_task'])) { ?>
             <form method="POST" action="" class="add-task">
                 <textarea class="form-control" name="task" cols="40" rows="3" placeholder="Edit your task...">
@@ -114,21 +116,26 @@ $query = preg_replace('/&page=\d*/i', '', $query);
             <form method="POST" action="index.php" class="add-task">
                 <input type="email" class="form-control" name="email" placeholder="Enter email" required>
                 <input type="text" class="form-control" name="name" placeholder="Enter name" required>
-                <textarea class="form-control" id="exampleTextarea" name="task" rows="3" cols="40" placeholder="Input your task..."></textarea>
+                <textarea class="form-control" name="task" rows="3" cols="40" placeholder="Input your task..." required></textarea>
                 <button type="submit" class="btn btn-outline-success">Add Task</button>
             </form>
         <?php } ?>
         <div class="sort-by">
             <h4>Sort By:</h4>
-            <a href=index.php?sortby=id class="btn btn-secondary">Id</a>
-            <a href="index.php?sortby=name" class="btn btn-secondary">Name</a></option>
-            <a href="index.php?sortby=email" class="btn btn-secondary">Email</a></option>
-            <a href="index.php?sortby=task" class="btn btn-secondary">Tasks</a></option>
-            <a href="index.php?sortby=perfomence" class="btn btn-secondary">Perfomence</a></option>
-            <select name="sort_value" id="sortValue">
-                <option value="asc" selected>По убыванию</option>
-                <option value="desc">По возрастанию</option>
-                <select />
+            <form method="GET" action="" class="sort">
+                <select name="sortby" class="form-control">
+                    <option value="id">Id</option>
+                    <option value="name">Name</option>
+                    <option value="email">Email</option>
+                    <option value="task">Task</option>
+                    <option value="perfomence">Perfomence</option>
+                </select>
+                <select name="sortvalue" class="form-control">
+                    <option value="asc" selected>Ascending</option>
+                    <option value="desc">Descending</option>
+                    <select />
+                    <input type="submit" value="Sort" class="btn btn-outline-success" />
+            </form>
         </div>
 
         <table class="table table-hover">
@@ -153,7 +160,7 @@ $query = preg_replace('/&page=\d*/i', '', $query);
                         <td>
                             <?php if (isset($_SESSION['username'])) { ?>
                                 <?php echo $rows['task']; ?>
-                                <?php echo $rows['edit']; ?>
+                                <span class="text-info"><?php echo $rows['edit']; ?></span>
                                 <br />
                                 <a href="index.php?edit_task=<?php echo $rows['id']; ?>" class="blockquote-footer">Edit Task</a>
                             <?php } else { ?>
@@ -187,13 +194,6 @@ $query = preg_replace('/&page=\d*/i', '', $query);
         </ul>
     </div>
 
-    <footer class="bg-primary">
-        <div class="container">
-            <div class="made-in">
-                Made In <a href="https://github.com/WebMobik">WebMobik</a>
-            </div>
-        </div>
-    </footer>
 </body>
 
 </html>
